@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyoungwon's Homepage</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-color: #f5f5f5;
+        }
+        .nav {
+            background-color: #444;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 260px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 0 10px 10px 0;
+        }
+        .nav-header {
+            font-size: 1.8em;
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 10px;
+            background: linear-gradient(135deg, #666, #444);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            padding: 0 20px;
+        }
+        .nav a {
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            text-decoration: none;
+            width: 100%;
+            border-radius: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav a:hover {
+            background-color: #555;
+            color: #fff;
+        }
+        .nav-footer {
+            margin-top: auto;
+            padding-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-footer div {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            width: 180px;
+        }
+        .nav-footer .email-container {
+            border: 2px solid #a4de02;
+            background: #e0f7da;
+        }
+        .nav-footer .instagram-container {
+            border: 2px solid #DD2A7B;
+            background: #ffebee;
+        }
+        .nav-footer .github-container {
+            border: 2px solid #000;
+            background: #f5f5f5;
+        }
+        .nav-footer img {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+        }
+        .nav-footer span {
+            color: #333;
+        }
+        .container-wrapper {
+            position: relative;
+            flex-grow: 1;
+            width: calc(100% - 260px);
+            margin-left: 260px;
+            height: calc(100vh - 80px); /* Adjust height to fit the container */
+            padding: 40px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.6); /* 투명도 높임 */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px 20px;
+            width: 70%;
+            height: 87%; /* Height adjusted slightly */
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            overflow-y: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            z-index: 1;
+        }
+        .profile-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px; /* 아래 여백 조절 */
+        }
+        .profile-img {
+            margin-right: 20px;
+            max-width: 150px; /* 사진 크기 축소 */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-info {
+            text-align: left;
+            padding-left: 20px;
+            white-space: nowrap;
+        }
+        .hobby-img {
+            margin-right: 20px;
+            max-width: 250px; /* 사진 크기 조절 */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .tabletennis-img {
+            margin-right: 20px;
+            max-width: 300px; /* 탁구 사진 크기 확대 */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .hobby-info {
+            margin-left: 20px;
+            text-align: left;
+            font-size: 16px; /* 글씨 크기 확대 */
+        }
+        .hobby-info-tabletennis {
+            margin-left: 0; /* 글씨 왼쪽으로 이동 */
+            padding-left: 40px; /* 왼쪽 여백 추가 */
+            text-align: left;
+            font-size: 16px; /* 글씨 크기 확대 */
+        }
+        .section-divider {
+            width: 80%;
+            border-bottom: 2px solid #ddd;
+            margin: 20px 0;
+        }
+        @media (max-width: 600px) {
+            body {
+                flex-direction: column;
+            }
+            .nav {
+                position: relative;
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                padding: 0;
+                border-radius: 0;
+            }
+            .nav-links {
+                flex-direction: row;
+                gap: 0;
+                width: auto;
+            }
+            .nav a {
+                text-align: center;
+                padding: 10px;
+            }
+            .container-wrapper {
+                padding: 20px;
+                margin-left: 0;
+            }
+            .container {
+                width: 100%;
+                height: auto;
+                margin-top: 20px;
+                top: 0;
+                left: 0;
+                transform: translate(0, 0) scale(1);
+            }
+            .profile-container {
+                flex-direction: column;
+                align-items: center;
+                padding-left: 0;
+            }
+            .profile-img {
+                margin: 0 auto 20px;
+                display: block;
+            }
+            .profile-info, .hobby-info, .hobby-info-tabletennis {
+                margin: 0 auto 20px;
+                text-align: left;
+            }
+            .nav-footer {
+                margin-top: 20px;
+                justify-content: center;
+                padding-bottom: 20px;
+            }
+        }
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        .profile-info p, .hobby-info p, .hobby-info-tabletennis p {
+            margin: 5px 0;
+        }
+        .history {
+            margin-top: 20px;
+            padding-left: 20px;
+            width: 100%;
+            text-align: left;
+            font-size: 14px; /* 글씨 크기 줄임 */
+        }
+        .history p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div class="nav-header">
+            <span style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); color: #fff;">Kyoungwon's homepage</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" id="nav-profile">Profile</a>
+            <a href="#" id="nav-about">History</a>
+            <a href="#" id="nav-hobby">Hobby</a>
+        </div>
+        <div class="nav-footer">
+            <div class="instagram-container" onclick="window.location.href='https://www.instagram.com/0l21o_one/'">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+                <span>0l21o_one</span>
+            </div>
+            <div class="email-container" onclick="window.location.href='mailto:gbl3890@naver.com'">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Email">
+                <span>gbl3890@naver.com</span>
+            </div>
+            <div class="github-container" onclick="window.location.href='https://github.com/KyoungwonLee'">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub">
+                <span>KyoungwonLee</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-wrapper">
+        <div id="profile" class="container">
+            <h2 class="section-title">Kyoungwon's Profile</h2>
+            <div class="profile-container">
+                <img src="myprofile.jpg" alt="프로필 이미지" class="profile-img">
+                <div class="profile-info">
+                    <p><strong>이름:</strong> 이경원(Kyoungwon Lee)</p>
+                    <p><strong>출생:</strong> 2001.03.23</p>
+                    <p><strong>나이:</strong> 24세 (만 23세)</p>
+                    <p><strong>신체:</strong> 171cm, 63kg</p>
+                    <p><strong>거주지:</strong> 서울 노원구</p>
+                    <p><strong>MBTI:</strong> ENFP</p>
+                    <p><strong>좋아하는 음식:</strong> 아구찜</p>
+                    <p><strong>좋아하는 스포츠:</strong> 볼링, 탁구, 스키</p>
+                </div>
+            </div>
+        </div>
+    
+        <div id="about" class="container">
+            <h2 class="section-title">My History</h2>
+            <div class="profile-container">
+                <img src="aboutme.jpg" alt="프로필 이미지" class="profile-img" style="max-width: 330px;"> <!-- 사진 크기 조절 -->
+                <div class="history">
+                    <p>서울 노원구 상계백병원 출생</p>
+                    <p>서울 노원구 하계동 거주</p>
+                    <p>서울 강북구 미아동으로 거주지 이전</p>
+                    <p>삼각산초등학교 입학</p>
+                    <p>경기도 남양주시 호평동으로 거주지 이전</p>
+                    <p>평동초등학교 재학</p>
+                    <p>서울 노원구 중계동으로 거주지 이전</p>
+                    <p>을지초등학교 재학</p>
+                    <p>을지초등학교 졸업</p>
+                    <p>상명중학교 입학</p>
+                    <p>상명중학교 졸업</p>
+                    <p>재현고등학교 입학</p>
+                    <p>재현고등학교 졸업</p>
+                    <p>이천 비상에듀 기숙학원 입소</p>
+                    <p>러셀 노원점</p>
+                    <p>강원대학교 컴퓨터공학과 입학</p>
+                    <p>입대</p>
+                    <p>5군수지원여단 본부근무대 근무</p>
+                    <p>전역</p>
+                    <p>강원대학교 컴퓨터공학과 2학년 재학중</p>
+                </div>
+            </div>
+        </div>
+    
+        <div id="hobby" class="container active">
+            <h2 class="section-title">My Hobby</h2>
+            <div class="section-divider"></div>
+            <div class="profile-container">
+                <img src="bowling.jpg" alt="볼링" class="hobby-img" style="max-width: 250px;"> <!-- 크기 조절 -->
+                <div class="hobby-info">
+                    <p>제 첫 번째 취미는 볼링입니다.</p>
+                    <p>대학교 입학 후 처음 접해보고 처음에는 큰 흥미를 끌지 못했지만,</p>
+                    <p>다른 친구들과 함께 치면서 스핀을 배우면서 재미를 느끼게 됐고,</p>
+                    <p>지금은 일주일에 4번은 치러갈 정도로 좋아하는 스포츠입니다.</p>
+                    <p>하우스볼을 사용하고있고 정식으로 배우지는 않았지만, 굉장히 좋아하는 취미입니다.</p>
+                    <p>최고점수는 209점입니다. :)</p>
+                </div>
+            </div>
+            <div class="section-divider"></div>
+            <div class="profile-container">
+                <div class="hobby-info hobby-info-tabletennis">
+                    <p>두 번째 취미는 탁구입니다.</p>
+                    <p>초등학교 6학년 방과후시간에 처음 배우고 접한 후로 꾸준히 치면서 실력을 늘리고 있습니다.</p>
+                    <p>강원대학교 탁구동아리 '탁우회'에 가입해 활동하고 있으며,</p>
+                    <p>이제까지와 다른, 다양한 플레이어와 탁구를 치며 경험을 쌓고 새로운 재미를 느끼고 있습니다.</p>
+                </div>
+                <img src="tabletennis.jpeg" alt="탁구" class="tabletennis-img">
+            </div>
+            <div class="section-divider"></div>
+            <div class="profile-container">
+                <img src="ski.jpg" alt="스키" class="hobby-img" style="max-width: 250px;"> <!-- 크기 조절 -->
+                <div class="hobby-info">
+                    <p>마지막 취미는 스키입니다.</p>
+                    <p>21살 대학교 수업으로 처음 배우고 접했는데,</p>
+                    <p>너무 재밌어서 매년 겨울마다 즐기는 스포츠입니다.</p>
+                    <p>정식으로 계속 배우지 않아 정확한 자세로 빠르게 잘 타지는 못하지만,</p>
+                    <p>나름 저만의 방식으로 익혀나가고 있습니다.</p>
+                    <p>겁이 없어 최상급 코스도 타본 경험이 있습니다.</p>
+                    <p>아직 장비가 없지만, 추후 스키복부터 스키 장비까지 구매를 할 생각이고 다음 기회에는 스노우보드도 타보려고 합니다. :D</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.nav a').click(function(event) {
+                event.preventDefault();
+                $('.container').removeClass('active');
+                const targetId = $(this).attr('id').replace('nav-', '');
+                $('#' + targetId).addClass('active');
+            });
+        });
+    </script>
+</body>
+</html>
